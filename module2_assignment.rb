@@ -27,19 +27,49 @@ end
 #  Implement a class called Solution. 
 class Solution
 
+  def initialize
+    @arrayLineAnalyzers = []
+  end
+
+
   # Implement the following read-only attributes in the Solution class.
   #* analyzers - an array of LineAnalyzer objects for each line in the file
+  def analyzers
+  end  
   #* highest_count_across_lines - a number with the maximum value for highest_wf_words attribute in the analyzers array.
+  def highest_count_across_lines
+  end 
   #* highest_count_words_across_lines - a filtered array of LineAnalyzer objects with the highest_wf_words attribute 
+  def highest_count_words_across_lines
+  end 
   #  equal to the highest_count_across_lines determined previously.
 
   # Implement the following methods in the Solution class.
   #* analyze_file() - processes 'test.txt' intro an array of LineAnalyzers and stores them in analyzers.
+  def analyze_file(file)
+    File.open(file).each do |line| 
+      @arrayLineAnalyzers << line.gsub("\n", "")
+    end
+    p @arrayLineAnalyzers
+
+
+
+     
+
+
+  end  
   #* calculate_line_with_highest_frequency() - determines the highest_count_across_lines and 
+  def calculate_line_with_highest_frequency()
+  end 
   #  highest_count_words_across_lines attribute values
-  #* print_highest_word_frequency_across_lines() - prints the values of LineAnalyzer objects in 
+  def chighest_count_words_across_lines
+  end
+  #* print_highest_word_frequency_across_lines() - prints the values of LineAnalyzer objects in
+  def print_highest_word_frequency_across_lines()
+  end 
   #  highest_count_words_across_lines in the specified format
-  
+  def highest_count_words_across_lines
+  end 
   # Implement the analyze_file() method() to:
   #* Read the 'test.txt' file in lines 
   #* Create an array of LineAnalyzers for each line in the file
