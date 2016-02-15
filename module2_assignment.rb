@@ -35,6 +35,8 @@ class Solution
   def initialize
     @arrayLineAnalyzers = []
     @highest_count_words_across_lines = Hash.new{0}
+    @lineWithMaxCont = [1]
+    @max_count_in_line = 0
   end
 
 
@@ -43,19 +45,19 @@ class Solution
   def analyzers(hash)
 
     @maxvValueInLine = Hash[*hash.max_by {|key, value| value}]
-
-    @max_count_in_line = @maxvValueInLine.values[0]
-    puts "а вот максимальные цифры в линиях #{@max_count_in_line}"
-    hash.reject! {| key, value | value != @max_count_in_line}
-    @highest_count_words_across_lines.update(hash) { |key, v1, v2| v1 >= v2 ? v1 : v2 }
     
-    # puts "а вот что получается с маусимальными словами #{@highest_count_words_across_lines}"
+    if  @max_count_in_line < @maxvValueInLine.values[0]
+      @max_count_in_line = @maxvValueInLine.values[0]
+      @lineWithMaxCont = []
+      @lineWithMaxCont <<  @line_number
+    elsif   @max_count_in_line == @maxvValueInLine.values[0]
+      @lineWithMaxCont <<  @line_number
+    end 
 
-    # @hash_max_values_in_line = hash.reject {| key, value | value == @max_value_in_line} 
-
-
-    ########@highest_count_words_across_lines.update(@maxvValueInLine)
-    # puts "хеш с максимальными словами в линии #{@highest_count_words_across_lines}"    
+    # @max_count_in_line = @maxvValueInLine.values[0]
+    hash.reject! { |key, value| value != @max_count_in_line}
+    @highest_count_words_across_lines.update(hash) { |key, v1, v2| v1 >= v2 ? v1 : v2 }
+     
   end  
   #* highest_count_words_across_lines - a filtered array of LineAnalyzer objects with the highest_wf_words attribute 
 
@@ -68,30 +70,29 @@ class Solution
     File.open(file).each do |line| 
       @arrayLineAnalyzers << line.gsub("\n", "")
     end
+
     @line_number = 0
     @arrayLineAnalyzers.each do |line|
       @content = line.downcase!
       @content = @content.split
-      # @lenght = @arrayLineAnalyzersLine.length
       
       @marks = @content.inject(Hash.new{0}){ |res, elem| 
         res[elem] += 1 
         res
       }
-      # puts @marks.inspect
+  
       @line_number += 1
-      analyzers(@marks)
-      
-      # puts "line number + #{@count}"
+      analyzers(@marks)     
     end 
-    # highest_count_words_across_lines
-    puts "document: #{@arrayLineAnalyzers}"
+
     calculate_word_frequency()
     puts  "number of lines: #{@line_number}"
     calculate_line_with_highest_frequency()
-  end  
+  end 
+
   #* calculate_line_with_highest_frequency() - determines the highest_count_across_lines and 
   #  highest_count_words_across_lines attribute values
+
   def calculate_line_with_highest_frequency()
     @arrayWordsInLine = []
     @line_count = 1
@@ -101,7 +102,7 @@ class Solution
       @content1 = @content1.split
       
       @highest_count_words_across_lines.each do |key, value|
-        if value == @highest_wf_count  &&  @content1.include?(key)
+        if value == @highest_wf_count  &&  @content1.include?(key) && @lineWithMaxCont.include?(@line_count)
           @arrayWordsInLine << key
         end
       end
