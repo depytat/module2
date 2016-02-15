@@ -41,8 +41,21 @@ class Solution
   # Implement the following read-only attributes in the Solution class.
   #* analyzers - an array of LineAnalyzer objects for each line in the file
   def analyzers(hash)
-    @hash1 = Hash[*hash.max_by {|key, value| value}]
-    @highest_count_words_across_lines.update(@hash1)
+
+    @maxvValueInLine = Hash[*hash.max_by {|key, value| value}]
+
+    @max_count_in_line = @maxvValueInLine.values[0]
+    puts "а вот максимальные цифры в линиях #{@max_count_in_line}"
+    hash.reject! {| key, value | value != @max_count_in_line}
+    @highest_count_words_across_lines.update(hash) { |key, v1, v2| v1 >= v2 ? v1 : v2 }
+    
+    # puts "а вот что получается с маусимальными словами #{@highest_count_words_across_lines}"
+
+    # @hash_max_values_in_line = hash.reject {| key, value | value == @max_value_in_line} 
+
+
+    ########@highest_count_words_across_lines.update(@maxvValueInLine)
+    # puts "хеш с максимальными словами в линии #{@highest_count_words_across_lines}"    
   end  
   #* highest_count_words_across_lines - a filtered array of LineAnalyzer objects with the highest_wf_words attribute 
 
@@ -55,10 +68,9 @@ class Solution
     File.open(file).each do |line| 
       @arrayLineAnalyzers << line.gsub("\n", "")
     end
-    @arrayLineAnalyzers1 = @arrayLineAnalyzers
     @line_number = 0
-    @arrayLineAnalyzers1.each do |line|
-      @content = line
+    @arrayLineAnalyzers.each do |line|
+      @content = line.downcase!
       @content = @content.split
       # @lenght = @arrayLineAnalyzersLine.length
       
@@ -83,14 +95,23 @@ class Solution
   def calculate_line_with_highest_frequency()
     @arrayWordsInLine = []
     @line_count = 1
-    @highest_count_words_across_lines.each do |key, value|
-      if value == @highest_wf_count
-        @arrayWordsInLine << key
-        puts "#{@arrayWordsInLine} (appears in line #{@line_count})"
+
+    @arrayLineAnalyzers.each do |line1|
+      @content1 = line1
+      @content1 = @content1.split
+      
+      @highest_count_words_across_lines.each do |key, value|
+        if value == @highest_wf_count  &&  @content1.include?(key)
+          @arrayWordsInLine << key
+        end
       end
+
+      unless @arrayWordsInLine == [] 
+        puts "#{@arrayWordsInLine} (appears in line #{@line_count})"
+      end  
       @arrayWordsInLine = []
-      @line_count += 1  
-    end  
+      @line_count += 1 
+    end 
   end 
   
 
@@ -118,7 +139,7 @@ class Solution
 
 
   def calculate_word_frequency()
-    puts @highest_count_words_across_lines
+    puts "что я сдесь выдаю #{@highest_count_words_across_lines}"
     @highest_wf_count = (@highest_count_words_across_lines.max_by {|key, value| value})[1]
     @highest_wf_words = @highest_count_words_across_lines.reject {| key, value | value != @highest_wf_count} 
     puts "highest word count: #{@highest_wf_count}" 
