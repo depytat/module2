@@ -29,19 +29,26 @@ class Solution
 
   def initialize
     @arrayLineAnalyzers = []
+    @higestCountAcrossLines = Hash.new{0}
   end
 
 
   # Implement the following read-only attributes in the Solution class.
   #* analyzers - an array of LineAnalyzer objects for each line in the file
-  def analyzers
+  def analyzers(hash)
+    @hash1 = Hash[*hash.max_by {|key, value| value}]
+    @higestCountAcrossLines.update(@hash1)
+    puts @higestCountAcrossLines
   end  
+  #* highest_count_words_across_lines - a filtered array of LineAnalyzer objects with the highest_wf_words attribute 
+  def highest_count_words_across_lines()
+    p @higestCountAcrossLines
+  end 
   #* highest_count_across_lines - a number with the maximum value for highest_wf_words attribute in the analyzers array.
   def highest_count_across_lines
+    puts @higestCountAcrossLines.max_by {|key, value| value}
   end 
-  #* highest_count_words_across_lines - a filtered array of LineAnalyzer objects with the highest_wf_words attribute 
-  def highest_count_words_across_lines
-  end 
+  
   #  equal to the highest_count_across_lines determined previously.
 
   # Implement the following methods in the Solution class.
@@ -50,13 +57,26 @@ class Solution
     File.open(file).each do |line| 
       @arrayLineAnalyzers << line.gsub("\n", "")
     end
-    p @arrayLineAnalyzers
-
-
-
-     
-
-
+    @arrayLineAnalyzers1 = @arrayLineAnalyzers
+    @count = 0
+    @arrayLineAnalyzers1.each do |line|
+      @arrayLineAnalyzersLine = line
+      @arrayLineAnalyzersLine = @arrayLineAnalyzersLine.split
+      # @lenght = @arrayLineAnalyzersLine.length
+      
+      @marks = @arrayLineAnalyzersLine.inject(Hash.new{0}){ |res, elem| 
+        res[elem] += 1 
+        res
+      }
+      # puts @marks.inspect
+      @count += 1
+      analyzers(@marks)
+      
+      # puts "line number + #{@count}"
+    end 
+    highest_count_words_across_lines
+    highest_count_across_lines
+    puts  @count
   end  
   #* calculate_line_with_highest_frequency() - determines the highest_count_across_lines and 
   def calculate_line_with_highest_frequency()
@@ -82,4 +102,9 @@ class Solution
 
   #Implement the print_highest_word_frequency_across_lines() method to
   #* print the values of objects in highest_count_words_across_lines in the specified format
+
+
+
+
+
 end

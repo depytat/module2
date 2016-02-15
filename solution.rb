@@ -14,19 +14,18 @@ solution.analyze_file('test.txt')
 
 
 
-def count_words(words)
-  words.each_with_object(Hash.new 0) do |word, counter|
-    counter[word] += 1
-  end
-end
+# def count_words(words)
+#   words.each_with_object(Hash.new 0) do |word, counter|
+#     counter[word] += 1
+#   end
+# end
  
-def print_counts(words)
-  count_words(words).each do |word, count|
-    puts "#{word}: #{count}"
-  end
-end
+# def print_counts(words)
+#   count_words(words).each do |word, count|
+#     puts "#{word}: #{count}"
+#   end
+# end
  
 
-
-array = ["meow", "meow", "wow", "wow"]
-print_counts(array)
+# array = ["meow", "meow", "wow", "wow"]
+# print_counts(array)
